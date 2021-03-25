@@ -25,7 +25,7 @@ st.write('''
 Finding the best solutions available for minimizing x and y
 ''')
 
-n = st.slider('Choose the sample size', 10, 10000, 100)
+n = st.slider('Choose the sample size', 10, 1000, 100)
 
 st.write("Here's an example:")
 x, y, classe = pareto_front(n)

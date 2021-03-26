@@ -33,14 +33,15 @@ def pareto_front(n: int, xobj:str = 'min', yobj: str = 'min') -> tuple:
     classification[pareto_opitimal] = 'Pareto'
     return (x, y, np.array(classification))
 
-st.write('''
+'''
 # Finding the Pareto Front in 2-D Spaces
 Finding the best solutions available for minimizing x and y
-''')
+'''
 
 n = st.slider('Choose the sample size', 10, 1000, 100)
-xobj = st.selectbox('Choose X objective', ['min', 'max'], index = 0, format_func = lambda x: x.title())
-yobj = st.selectbox('Choose Y objective', ['min', 'max'], index = 0, format_func = lambda x: x.title())
+with st.beta_container():
+    xobj = st.selectbox('Choose X objective', ['min', 'max'], index = 0, format_func = lambda x: x.title())
+    yobj = st.selectbox('Choose Y objective', ['min', 'max'], index = 0, format_func = lambda x: x.title())
 
 st.write("Here's what it looks like:")
 x, y, classe = pareto_front(n, xobj = xobj, yobj = yobj)

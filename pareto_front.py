@@ -34,7 +34,7 @@ def pareto_front(x: np.array, y: np.array, xobj: str = 'min', yobj: str = 'min')
             else:
                 continue
     classification = np.repeat('Non-Opitimal', n).astype('object')
-    classification[pareto_opitimal] = 'Pareto Opitimal'
+    classification[pareto_opitimal] = 'Pareto Optimal'
     return np.array(classification)
 
 '''
@@ -55,12 +55,20 @@ classe = pareto_front(x, y, xobj = xobj, yobj = yobj)
 df = pd.DataFrame([(i, j, k) for i, j, k in zip(x, y, classe)], columns = ['x', 'y', 'classe'])
 
 with st.beta_container():
-    plot = alt.Chart(df).mark_point().encode(
+    scatter = alt.Chart(df).mark_point().encode(
         x = 'x:Q', 
         y = 'y:Q', 
-        color = alt.Color('classe', scale=alt.Scale(domain=['Non-Opitimal', 'Pareto Opitimal'], range=["#377EB8", "#E41A1C"])),
-        fill = alt.Color('classe', scale=alt.Scale(domain=['Non-Opitimal', 'Pareto Opitimal'], range=["#377EB8", "#E41A1C"])), 
+        color = alt.Color('classe', scale=alt.Scale(domain=['Non-Opitimal', 'Pareto Optimal'], range=["#377EB8", "#E41A1C"])),
+        fill = alt.Color('classe', scale=alt.Scale(domain=['Non-Opitimal', 'Pareto Optimal'], range=["#377EB8", "#E41A1C"])),
         tooltip = ['x', 'y']
     )
+    
+    line = alt.Chart(df[df['classe'] == 'Pareto Optimal']).mark_line().encode(
+                x = 'x:Q',
+                y = 'y:Q',
+            color = alt.Color('classe', scale=alt.Scale(domain=['Non-Opitimal', 'Pareto Optimal'], range=["#377EB8", "#E41A1C"])),
+            tooltip = ['x', 'y']
+        )
+    plot = scatter + line
 
 st.altair_chart(plot, use_container_width=True)

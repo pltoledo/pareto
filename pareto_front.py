@@ -39,19 +39,23 @@ Finding the best solutions available for minimizing x and y
 '''
 
 n = st.slider('Choose the sample size', 10, 1000, 100)
-with st.beta_container():
+col1, col2 = st.beta_columns(2)
+with col1:
     xobj = st.selectbox('Choose X objective', ['min', 'max'], index = 0, format_func = lambda x: x.title())
+with col2:    
     yobj = st.selectbox('Choose Y objective', ['min', 'max'], index = 0, format_func = lambda x: x.title())
 
 st.write("Here's what it looks like:")
 x, y, classe = pareto_front(n, xobj = xobj, yobj = yobj)
 df = pd.DataFrame([(i, j, k) for i, j, k in zip(x, y, classe)], columns = ['x', 'y', 'classe'])
-plot = alt.Chart(df).mark_point().encode(
-    x = 'x:Q', 
-    y = 'y:Q', 
-    color = alt.Color('classe', scale=alt.Scale(scheme='set1')),
-    fill = alt.Color('classe', scale=alt.Scale(scheme='set1')), 
-    tooltip = ['x', 'y']
-)
+
+with st.beta_container():
+    plot = alt.Chart(df).mark_point().encode(
+        x = 'x:Q', 
+        y = 'y:Q', 
+        color = alt.Color('classe', scale=alt.Scale(scheme='set1')),
+        fill = alt.Color('classe', scale=alt.Scale(scheme='set1')), 
+        tooltip = ['x', 'y']
+    )
 
 st.altair_chart(plot, use_container_width=True)

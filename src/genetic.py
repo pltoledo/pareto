@@ -98,41 +98,45 @@ def genetic_opt(f: callable, npop: int, maxgen: int, nbits: int = 10, pc = 0.9, 
     return pop
 
 
-'''
-# Genetic Algorithms
-### Using genetic algorithms for optimization, with the following methodology
+def write():
+    st.write('''
+        # Genetic Algorithms
+        ### Using genetic algorithms for optimization, with the following methodology
 
-* **Code:** Binary N-bit encoding
-* **Selection:** Tournament Selection
-* **Crossover:** 2 Point Crossover
-* **Mutation Probability:** $\\frac{1}{npop\\sqrt(nbits)}$
+        * **Code:** Binary N-bit encoding
+        * **Selection:** Tournament Selection
+        * **Crossover:** 2 Point Crossover
+        * **Mutation Probability:** $\\frac{1}{npop\\sqrt(nbits)}$
 
-### Optmized function:
+        ### Optmized function:
 
-$$f(x) = \\frac{10sin(x^2 + y^2)}{\\sqrt{x^2 + y^2}}$$
-'''
-
-npop = st.slider('Choose the population size', 10, 1000, 500)
-col1, col2, col3 = st.beta_columns(3)
-
-with col1:
-    maxgen = st.number_input('Maximum number of generations', min_value = 1, max_value = 200, value = 20, step = 1)
-with col2:    
-    pc = st.number_input('Crossover Probability', min_value = 0.0, max_value = 1.0, value = 0.9, step = .05)
-with col3:    
-    n_tourn = st.number_input('Competitors in tournament selection', min_value = 2, max_value = 10, value = 2, step = 1)
-
-st.write("Evolution:")
-result = genetic_opt(func, npop, maxgen, pc = pc, n_tourn = n_tourn)
-df = pd.DataFrame(result, columns = ['x', 'y', 'f']).astype('float64')
-
-
-
-
-with st.beta_container():
-    plot = alt.Chart(df).mark_point().encode(
-        x = 'x:Q', 
-        y = 'y:Q', 
-        tooltip = ['x', 'y', 'f']
+        $$f(x) = \\frac{10sin(x^2 + y^2)}{\\sqrt{x^2 + y^2}}$$
+    '''
     )
-    st.altair_chart(plot, use_container_width=True)
+    npop = st.slider('Choose the population size', 10, 1000, 500)
+    col1, col2, col3 = st.beta_columns(3)
+
+    with col1:
+        maxgen = st.number_input('Maximum number of generations', min_value = 1, max_value = 200, value = 20, step = 1)
+    with col2:    
+        pc = st.number_input('Crossover Probability', min_value = 0.0, max_value = 1.0, value = 0.9, step = .05)
+    with col3:    
+        n_tourn = st.number_input('Competitors in tournament selection', min_value = 2, max_value = 10, value = 2, step = 1)
+
+    st.write("Evolution:")
+    result = genetic_opt(func, npop, maxgen, pc = pc, n_tourn = n_tourn)
+    df = pd.DataFrame(result, columns = ['x', 'y', 'f']).astype('float64')
+
+
+
+
+    with st.beta_container():
+        plot = alt.Chart(df, height=500, width=600).mark_point().encode(
+            x = 'x:Q', 
+            y = 'y:Q', 
+            tooltip = ['x', 'y', 'f']
+        )
+        st.altair_chart(plot)
+
+if __name__ == 'main':
+    write()

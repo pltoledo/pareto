@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit run pareto_front.py
+web: sh setup.sh && streamlit run src/pareto_front.py

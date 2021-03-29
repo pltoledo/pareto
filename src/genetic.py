@@ -7,7 +7,6 @@ def decode(string, min, max):
     value = int(string, 2)
     return (((max - min) / (2**len(string) - 1)) * value) + min
 
-@st.cache
 def func(x, y):
     return (10 * np.sin(np.sqrt(x**2 + y**2))) / (np.sqrt(x**2 + y**2))
 
@@ -124,7 +123,8 @@ def write():
         n_tourn = st.number_input('Competitors in tournament selection', min_value = 2, max_value = 10, value = 2, step = 1)
 
     st.write("Evolution:")
-    result = genetic_opt(func, npop, maxgen, pc = pc, n_tourn = n_tourn)
+    with st.spinner("Running algorithm ..."):
+        result = genetic_opt(func, npop, maxgen, pc = pc, n_tourn = n_tourn)
     df = pd.DataFrame(result, columns = ['x', 'y', 'f']).astype('float64')
 
 

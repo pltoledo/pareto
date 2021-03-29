@@ -71,4 +71,4 @@ with st.beta_container():
         )
     plot = scatter + line
 
-st.altair_chart(plot, use_container_width=True)
+    st.altair_chart(plot, use_container_width=True)

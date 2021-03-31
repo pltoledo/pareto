@@ -77,5 +77,5 @@ def write():
 
         st.altair_chart(plot, use_container_width=True)
 
-if __name__ == 'main':
+if __name__ == '__main__':
     write()

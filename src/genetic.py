@@ -13,7 +13,7 @@ class GeneticBinary:
     def __init__(self):
         pass
     
-    def generate_pop(self, npop, nbits = 10, bounds = [(-5, 5), (-5,  5)]):
+    def generate_pop(self, npop, nbits=10, bounds=[(-5, 5), (-5,  5)]):
         
         pop = np.empty((npop, 3), dtype = 'object')
         xmin, xmax = bounds[0]
@@ -28,7 +28,7 @@ class GeneticBinary:
         self.nbits = nbits
         self.bounds = bounds
 
-    def evolve(self, f, maxgen, pc = 0.9, n_tourn = 2):
+    def evolve(self, f, maxgen, pc=0.9, n_tourn=2):
         
         xmin, xmax = self.bounds[0]
         ymin, ymax = self.bounds[1]
@@ -121,21 +121,21 @@ class GeneticReal:
     def __init__(self):
         pass
     
-    def generate_pop(self, npop, bounds = [(-5, 5), (-5,  5)]):
+    def generate_pop(self, npop, bounds=[(-5, 5), (-5,  5)]):
         
-        pop = np.empty((npop, 3), dtype = 'object')
+        pop = np.empty((npop, 3), dtype='object')
         xmin, xmax = bounds[0]
         ymin, ymax = bounds[1]
 
         for i in range(npop):
-            pop[i, 0] = np.random.uniform(low = xmin, high = xmax)
-            pop[i, 1] = np.random.uniform(low = xmin, high = xmax)
+            pop[i, 0] = np.random.uniform(low=xmin, high=xmax)
+            pop[i, 1] = np.random.uniform(low=xmin, high=xmax)
 
         self.initial_pop = pop
         self.npop = npop
         self.bounds = bounds
 
-    def evolve(self, f, maxgen, eta, pc = 0.9, pm = 0.001, n_tourn = 2):
+    def evolve(self, f, maxgen, eta, pc=0.9, pm=0.001, n_tourn=2):
         
         xmin, xmax = self.bounds[0]
         ymin, ymax = self.bounds[1]
@@ -147,7 +147,7 @@ class GeneticReal:
         # Inicializa a população selecionando valores aleatórios
         ngen = 0
         while ngen < maxgen:
-            next_gen = np.empty((1, 3), dtype = 'object')[1::]
+            next_gen = np.empty((1, 3), dtype='object')[1::]
 
             # Preenche a próxima geração
             while next_gen.shape[0] < self.npop:
@@ -155,25 +155,25 @@ class GeneticReal:
                 # Utiliza torunament selection para criar o mating pool
                 champions = []
                 for l in range(2):
-                    tourn = np.random.choice(range(self.npop), size = n_tourn, replace = False)
+                    tourn = np.random.choice(range(self.npop), size=n_tourn, replace=False)
                     candidates = pop[tourn, :]
                     champions.append(candidates[np.argsort(candidates[:, 2])][0, [0, 1]])
                 dad, mom = champions
 
                 # Faz o crossover utilizando SXB
-                if np.random.uniform(size = 1) < pc:
-                    u = np.random.uniform(size = 1)
+                if np.random.uniform(size=1) < pc:
+                    u = np.random.uniform(size=1)
                     if u < 0.5:
-                        beta = (2 * u)**(1 / (eta + 1))
+                        beta = (2*u)**(1 / (eta + 1))
                     else:
-                        beta = (1 / (2 * (1 -u)))**(1 / (eta + 1))
+                        beta = (1 / (2*(1 - u)))**(1 / (eta + 1))
 
                     offspring1 = []
                     offspring2 = []
                     for i in range(len(self.bounds)):
                         
-                        var1 = 0.5 * (1 + beta) * dad[i] + (1 - beta) * mom[i]
-                        var2 = 0.5 * (1 - beta) * dad[i] + (1 + beta) * mom[i]
+                        var1 = 0.5*(1 + beta)*dad[i] + (1 - beta)*mom[i]
+                        var2 = 0.5*(1 - beta)*dad[i] + (1 + beta)*mom[i]
 
                         ## Ajusta as variáveis que passarem dos limites estabelecidos
                         if var1 > self.bounds[i][1]:
@@ -202,9 +202,9 @@ class GeneticReal:
                     if j == 2:
                         next_gen[i, j] = f(next_gen[i, 0], next_gen[i, 1])
                     else:
-                        u = np.random.uniform(size = 1)
+                        u = np.random.uniform(size=1)
                         if u < pm:
-                            next_gen[i, j] = np.random.uniform(low = self.bounds[j][0], high = self.bounds[j][1])
+                            next_gen[i, j] = np.random.uniform(low=self.bounds[j][0], high=self.bounds[j][1])
                         else:
                             continue
             

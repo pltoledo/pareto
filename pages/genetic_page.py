@@ -41,7 +41,7 @@ def write():
         with col5:    
             pc = st.number_input('Crossover Probability', min_value = 0.0, max_value = 1.0, value = 0.9, step = .05)
         with col6:    
-            pm = st.number_input('Mutation Probability', min_value = 0.0, max_value = .3, value = 0.001, step = .01, format="%.3f")
+            pm = st.number_input('Mutation Probability', min_value = 0.0, max_value = .3, value = 0.001, step = .001, format="%.3f")
         with col7:    
             eta = st.number_input('Distribution index', min_value = .05, max_value = 1.0, value = .25, step = .05)
 
@@ -84,5 +84,5 @@ def write():
             )
             st.altair_chart(plot)
 
-if __name__ == 'main':
+if __name__ == '__main__':
     write()

@@ -1,10 +1,10 @@
 import streamlit as st
 import src.pareto_front 
-import src.genetic 
+import pages.genetic_page
 
 PAGES = {
-    "2-D Pareto Front": src.pareto_front,
-    "Genetic Algorithm": src.genetic
+    "Genetic Algorithm": pages.genetic_page,
+    "2-D Pareto Front": src.pareto_front
 }
 
 

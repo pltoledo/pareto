@@ -42,7 +42,7 @@ class GeneticBinary:
         # Inicializa a população selecionando valores aleatórios
         ngen = 0
         while ngen < maxgen:
-            next_gen = np.empty((1, 3), dtype = 'object')[1::]
+            next_gen = np.empty((1, 3), dtype='object')[1::]
 
             # Preenche a próxima geração
             while next_gen.shape[0] < self.npop:
@@ -56,16 +56,16 @@ class GeneticBinary:
                 dad, mom = champions
 
                 # Faz o crossover utilizando 2 point crossover
-                if np.random.uniform(size = 1) < pc:
+                if np.random.uniform(size=1) < pc:
                     offspring1 = []
                     offspring2 = []
                     for i in range(len(self.bounds)):
-                        first_cpoint = np.random.randint(0, self.nbits, size = 1)[0]
+                        first_cpoint = np.random.randint(0, self.nbits, size=1)[0]
                         if first_cpoint == self.nbits - 1:
                             second_cpoint = first_cpoint
-                            first_cpoint = np.random.randint(0, second_cpoint, size = 1)[0]
+                            first_cpoint = np.random.randint(0, second_cpoint, size=1)[0]
                         else:
-                            second_cpoint = np.random.randint(first_cpoint + 1, self.nbits, size = 1)[0]
+                            second_cpoint = np.random.randint(first_cpoint + 1, self.nbits, size=1)[0]
 
                         var1 = dad[i][:first_cpoint] + mom[i][first_cpoint:second_cpoint] + dad[i][second_cpoint:]
                         var2 = mom[i][:first_cpoint] + dad[i][first_cpoint:second_cpoint] + mom[i][second_cpoint:]

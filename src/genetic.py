@@ -1,14 +1,10 @@
 import streamlit as st
 import numpy as np
+from src.utils import decode
 
-def decode(string, min, max):
-        value = int(string, 2)
-        return (((max - min) / (2**len(string) - 1)) * value) + min
 
-def func(x, y):
-    return (10 * np.sin(np.sqrt(x**2 + y**2))) / (np.sqrt(x**2 + y**2))
 
-class GeneticBinary:
+class BinaryEvolver:
 
     def __init__(self):
         pass
@@ -116,7 +112,7 @@ class GeneticBinary:
             pop[i, 1] =  decode(pop[i, 1], ymin, ymax)
         self.final_gen = pop
 
-class GeneticReal:
+class RealEvolver:
 
     def __init__(self):
         pass

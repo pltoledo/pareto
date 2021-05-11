@@ -34,21 +34,21 @@ def write():
     npop, encoding = base_inputs()
     # Run Algorithm
     if encoding == 'real':
-        maxgen, n_tourn, pc, pm, eta = real_inputs(func, npop)
+        maxgen, n_candidates, pc, pm, eta = real_inputs(func, npop)
         st.write("Evolution:")
         with st.spinner("Running algorithm ..."):
             evolver = gen.RealEvolver()
             evolver.generate_pop(npop = npop, bounds=bounds)
-            evolver.evolve(func, maxgen, eta, pc = pc, pm = pm, n_tourn = n_tourn)
+            evolver.evolve(func, maxgen, eta, pc=pc, pm=pm, n_candidates=n_candidates)
         df = pd.DataFrame(evolver.final_gen, columns = ['x', 'y', 'f']).astype('float64')
         plot_pop(df)
     else:
-        maxgen, n_tourn, pc, nbits = binary_inputs(func, npop)
+        maxgen, n_candidates, pc, nbits = binary_inputs(func, npop)
         st.write("Evolution:")
         with st.spinner("Running algorithm ..."):
             evolver = gen.BinaryEvolver()
             evolver.generate_pop(npop = npop, nbits=nbits, bounds=bounds)
-            evolver.evolve(func, maxgen, pc = pc, n_tourn = n_tourn)
+            evolver.evolve(func, maxgen, pc=pc, n_candidates=n_candidates)
         df = pd.DataFrame(evolver.final_gen, columns = ['x', 'y', 'f']).astype('float64')
         plot_pop(df)
     # Analyze Interation Results

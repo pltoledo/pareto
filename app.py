@@ -11,11 +11,6 @@ PAGES = {
 def main():
     st.sidebar.title("Navigation")
     selection = st.sidebar.radio("Go to", list(PAGES.keys()))
-
-    page = PAGES[selection]
-
-    page.write()
-
     st.sidebar.title("About")
     st.sidebar.info(
             """
@@ -23,6 +18,8 @@ def main():
             It is maintained by Pedro Toledo, statistics undergraduate and Data Scientist.
         """
         )
+    page = PAGES[selection]
+    page.write()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 import streamlit as st
 
-def decode(string, min, max):
+def decode(string, bounds):
+        min, max = bounds
         value = int(string, 2)
         return (((max - min) / (2**len(string) - 1)) * value) + min
 

@@ -30,7 +30,7 @@ def write():
          '''
          )
     # Define Initial Variables
-    selec_func, func = function_inputs()
+    selec_func, func, bounds = function_inputs()
     npop, encoding = base_inputs()
     # Run Algorithm
     if encoding == 'real':
@@ -38,7 +38,7 @@ def write():
         st.write("Evolution:")
         with st.spinner("Running algorithm ..."):
             evolver = gen.RealEvolver()
-            evolver.generate_pop(npop = npop)
+            evolver.generate_pop(npop = npop, bounds=bounds)
             evolver.evolve(func, maxgen, eta, pc = pc, pm = pm, n_tourn = n_tourn)
         df = pd.DataFrame(evolver.final_gen, columns = ['x', 'y', 'f']).astype('float64')
         plot_pop(df)
@@ -47,7 +47,7 @@ def write():
         st.write("Evolution:")
         with st.spinner("Running algorithm ..."):
             evolver = gen.BinaryEvolver()
-            evolver.generate_pop(npop = npop, nbits=nbits)
+            evolver.generate_pop(npop = npop, nbits=nbits, bounds=bounds)
             evolver.evolve(func, maxgen, pc = pc, n_tourn = n_tourn)
         df = pd.DataFrame(evolver.final_gen, columns = ['x', 'y', 'f']).astype('float64')
         plot_pop(df)

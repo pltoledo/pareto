@@ -13,18 +13,27 @@ def ackley(x, y):
 def himmelblau(x, y):
     return (x**2 + y - 11)**2 + (x + y**2 - 7)**2
 
-func_callables = {
-    'base': base,
-    'rosenbrock': rosenbrock,
-    'ackley': ackley,
-    'himmelblau': himmelblau
-}
-
-func_minimas  = {
-    'base': '-',
-    'rosenbrock': 0,
-    'ackley': 0,
-    'himmelblau': 0
+func_ref = {
+    'base': {
+        'callable': base,
+        'bounds': [(-5, 5), (-5,  5)],
+        'minima': '-',
+    },
+    'rosenbrock': {
+        'callable': rosenbrock,
+        'bounds':  [(-1000, 1000), (-1000,  1000)],
+        'minima':  0.0,
+    },
+    'ackley': {
+        'callable': ackley,
+        'bounds': [(-5, 5), (-5,  5)],
+        'minima':  0.0,
+    },
+    'himmelblau': {
+        'callable': himmelblau,
+        'bounds': [(-5, 5), (-5,  5)],
+        'minima':  0.0,
+    },
 }
 
 #if selec_func == 'rosenbrock':

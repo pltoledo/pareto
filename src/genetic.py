@@ -12,8 +12,6 @@ class BinaryEvolver:
     def generate_pop(self, npop, nbits=10, bounds=[(-5, 5), (-5,  5)]):
         
         pop = np.empty((npop, 3), dtype = 'object')
-        xmin, xmax = bounds[0]
-        ymin, ymax = bounds[1]
 
         for i in range(npop):
             pop[i, 0] = ''.join([str(j) for j in np.random.randint(0, 2, nbits)])
@@ -125,7 +123,7 @@ class RealEvolver:
 
         for i in range(npop):
             pop[i, 0] = np.random.uniform(low=xmin, high=xmax)
-            pop[i, 1] = np.random.uniform(low=xmin, high=xmax)
+            pop[i, 1] = np.random.uniform(low=ymin, high=ymax)
 
         self.initial_pop = pop
         self.npop = npop
@@ -133,8 +131,6 @@ class RealEvolver:
 
     def evolve(self, f, maxgen, eta, pc=0.9, pm=0.001, n_tourn=2):
         
-        xmin, xmax = self.bounds[0]
-        ymin, ymax = self.bounds[1]
         pop = self.initial_pop
 
         for i in range(self.npop):

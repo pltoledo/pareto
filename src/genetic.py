@@ -1,9 +1,9 @@
 import streamlit as st
 import numpy as np
 from src.base import BaseEvolver
-from src.selection import tournament_selection
-from src.crossover import two_point_crossover, sbx_crossover
-from src.mutation import binary_mutation, real_mutation
+from src.ops.selection import tournament_selection
+from src.ops.crossover import two_point_crossover, sbx_crossover
+from src.ops.mutation import binary_mutation, real_mutation
 from src.utils import decode
 
 

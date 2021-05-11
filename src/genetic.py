@@ -118,7 +118,7 @@ class RealEvolver:
         pass
     
     def generate_pop(self, npop, bounds=[(-5, 5), (-5,  5)]):
-        
+
         pop = np.empty((npop, 3), dtype='object')
         xmin, xmax = bounds[0]
         ymin, ymax = bounds[1]
@@ -209,5 +209,5 @@ class RealEvolver:
             pop = joined_pop[np.argsort(joined_pop[:, 2])][range(self.npop), :]
             ngen += 1
         
-        # Retorna a população com os valores decodificados
+        # Retorna a população final
         self.final_gen = pop

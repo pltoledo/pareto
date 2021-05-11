@@ -7,7 +7,7 @@ from src.functions import func_callables, func_minimas
 from src.utils import func_text_st
 
 def function_inputs():
-    selec_func = st.selectbox('Select a function', ('base', 'rosenbrock'), index = 0, format_func = lambda x: x.title())
+    selec_func = st.selectbox('Select a function', ('base', 'rosenbrock', 'ackley', 'himmelblau'), index = 0, format_func = lambda x: x.title())
     func_text_st(selec_func)
     func = func_callables[selec_func]
     return (selec_func, func)
@@ -60,7 +60,7 @@ def plot_pop(df):
 
 def compare_results(selec_func, df):
     teor_result = func_minimas[selec_func]
-    best_result = np.round(np.min(df['f']), 3)
+    best_result = np.round(np.min(df['f']), 6)
     try:
         abs_diff = teor_result - best_result 
     except:

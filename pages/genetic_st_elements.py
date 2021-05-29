@@ -16,39 +16,50 @@ def function_inputs():
 def base_inputs():
     col1, col2 = st.beta_columns([2, 1])
     with col1:
-        npop = st.slider('Choose the population size', 10, 1000, 500)
+        npop = st.slider('Population size', 10, 1000, 500)
     with col2:    
-        encoding = st.selectbox('Select variable encoding', ('real', 'binary'), index = 0, format_func = lambda x: x.title())
-    return (npop, encoding)
+        maxgen = st.number_input('Maximum number of generations', min_value = 1, max_value = 1000, value = 20, step = 5)
+    return (npop, maxgen)
+
+def encoding_input():
+    col1, col2 = st.beta_columns(2)
+    with col1:
+        encoding = st.selectbox('Type', ('real', 'binary'), index = 0, format_func = lambda x: x.title())
+    if encoding == 'binary':
+        with col2:
+            nbits = st.number_input('Number of Bits', min_value = 5, max_value = 100, value = 10, step = 1)
+        return (encoding, nbits)
+    else:
+        return encoding
+
+def selector_inputs():
+    methods = ['tournament', 'roulette']
+    col1, col2 = st.beta_columns(2)
+    with col1:
+        selec_method = st.selectbox('Method', tuple(methods), index = 0, format_func = lambda x: x.title())
+    if selec_method == 'tournament':
+        with col2:
+            n_candidates = st.number_input('Competitors in Tournament', min_value = 2, max_value = 20, value = 2, step = 1)
+        selec_dict = dict(selec_method = selec_method, n_candidates = n_candidates)
+        return selec_dict
+    else:
+        return dict(selec_method = selec_method)
 
 def real_inputs(func, npop):
-    col3, col4 = st.beta_columns([1, 1])
-    with col3:
-        maxgen = st.number_input('Maximum number of generations', min_value = 1, max_value = 1000, value = 20, step = 5)
-    with col4:    
-        n_candidates = st.number_input('Competitors in tournament selection', min_value = 2, max_value = 20, value = 2, step = 1)
-    
-    col5, col6, col7 = st.beta_columns([1, 1, 1])
-    with col5:    
+    col1, col2, col3 = st.beta_columns([1, 1, 1])
+    with col1:    
+        eta = st.number_input('Distribution Index', min_value = .05, max_value = 1.0, value = .25, step = .05)
+    with col2:    
         pc = st.number_input('Crossover Probability', min_value = 0.0, max_value = 1.0, value = 0.9, step = .05)
-    with col6:    
+    with col3:    
         pm = st.number_input('Mutation Probability', min_value = 0.0, max_value = .3, value = 0.001, step = .001, format="%.3f")
-    with col7:    
-        eta = st.number_input('Distribution index', min_value = .05, max_value = 1.0, value = .25, step = .05)
-    return (maxgen, n_candidates, pc, pm, eta)
+    return (eta, pc, pm)
 
 def binary_inputs(func, npop):
     col3, col4, = st.beta_columns(2)
-    with col3:
-        maxgen = st.number_input('Maximum number of generations', min_value = 1, max_value = 1000, value = 20, step = 1)
-    with col4:    
-        nbits = st.number_input('Number of Enconding Bits', min_value = 5, max_value = 100, value = 10, step = 1)
-    col5, col6 = st.beta_columns(2)
-    with col5:    
+    with col3:    
         pc = st.number_input('Crossover Probability', min_value = 0.0, max_value = 1.0, value = 0.9, step = .05)
-    with col6:    
-        n_candidates = st.number_input('Competitors in tournament selection', min_value = 2, max_value = 20, value = 2, step = 1)
-    return (maxgen, n_candidates, pc, nbits)
+    return (pc)
 
 def plot_pop(df):
     with st.beta_container():

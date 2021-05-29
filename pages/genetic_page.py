@@ -31,27 +31,36 @@ def write():
          )
     # Define Initial Variables
     selec_func, func, bounds = function_inputs()
-    npop, encoding = base_inputs()
+    st.write("### **General Parameters:**")
+    npop, maxgen = base_inputs()
+    st.write("### **Selection Method:**")
+    selection = selector_inputs()
+    st.write("### **Variable Encoding:**")
+    encoding = encoding_input()
     # Run Algorithm
     if encoding == 'real':
-        maxgen, n_candidates, pc, pm, eta = real_inputs(func, npop)
-        st.write("Evolution:")
+        st.write("### **Encoding Parameters:**")
+        eta, pc, pm = real_inputs(func, npop)
+        st.write("### **Evolution:**")
         with st.spinner("Running algorithm ..."):
             evolver = gen.RealEvolver()
             evolver.generate_pop(npop = npop, bounds=bounds)
-            evolver.evolve(func, maxgen, eta, pc=pc, pm=pm, n_candidates=n_candidates)
+            evolver.evolve(func, maxgen, eta, pc=pc, pm=pm, **selection)
         df = pd.DataFrame(evolver.final_gen, columns = ['x', 'y', 'f']).astype('float64')
         plot_pop(df)
     else:
-        maxgen, n_candidates, pc, nbits = binary_inputs(func, npop)
-        st.write("Evolution:")
+        st.write("### **Encoding Parameters:**")
+        pc = binary_inputs(func, npop)
+        nbits = encoding[1]
+        st.write("### **Evolution:**")
         with st.spinner("Running algorithm ..."):
             evolver = gen.BinaryEvolver()
             evolver.generate_pop(npop = npop, nbits=nbits, bounds=bounds)
-            evolver.evolve(func, maxgen, pc=pc, n_candidates=n_candidates)
+            evolver.evolve(func, maxgen, pc=pc, **selection)
         df = pd.DataFrame(evolver.final_gen, columns = ['x', 'y', 'f']).astype('float64')
         plot_pop(df)
     # Analyze Interation Results
+    st.write("### **Results:**")
     compare_results(selec_func, df)
 
 if __name__ == '__main__':

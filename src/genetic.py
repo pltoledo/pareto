@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 from src.base import BaseEvolver
-from src.ops.selection import tournament_selection
+from src.ops.selection import Selector
 from src.ops.crossover import two_point_crossover, sbx_crossover
 from src.ops.mutation import binary_mutation, real_mutation
 from src.utils import decode
@@ -23,21 +23,22 @@ class BinaryEvolver(BaseEvolver):
         self.nbits = nbits
         self.bounds = bounds
 
-    def evolve(self, f, maxgen, pc=0.9, n_candidates=2):
+    def evolve(self, f, maxgen, selec_method = 'tournament', pc=0.9, n_candidates=2):
 
         pop = self.initial_pop
         for i in range(self.npop):
             pop[i, 2] = f(decode(pop[i, 0], self.bounds[0]), decode(pop[i, 1], self.bounds[1]))
         pm = 1 / (self.npop * np.sqrt(self.nbits)) # Probabilidade de mutação
         ngen = 0
+        selector = Selector(selec_method)
         while ngen < maxgen:
             next_gen = np.empty((1, 3), dtype='object')[1::]
             # Preenche a próxima geração
             while next_gen.shape[0] < self.npop:
-                # Utiliza torunament selection para criar o mating pool
-                dad, mom = tournament_selection(pop, n_candidates)
                 # Faz o crossover utilizando 2 point crossover
                 if np.random.uniform(size=1) < pc:
+                    # Utiliza torunament selection para criar o mating pool
+                    dad, mom = selector.select(pop, n_candidates)
                     offspring1, offspring2 = two_point_crossover(dad, mom, self.bounds, self.nbits)
                     # Acrescenta o indivíduo a próxima geração
                     next_gen = np.vstack((next_gen, np.array(offspring1), np.array(offspring2)))       
@@ -70,20 +71,21 @@ class RealEvolver(BaseEvolver):
         self.npop = npop
         self.bounds = bounds
 
-    def evolve(self, f, maxgen, eta, pc=0.9, pm=0.001, n_candidates=2):
+    def evolve(self, f, maxgen, eta, selec_method = 'tournament', pc=0.9, pm=0.001, n_candidates=2):
 
         pop = self.initial_pop
         for i in range(self.npop):
             pop[i, 2] = f(pop[i, 0], pop[i, 1])
         ngen = 0
+        selector = Selector(selec_method)
         while ngen < maxgen:
             next_gen = np.empty((1, 3), dtype='object')[1::]
             # Preenche a próxima geração
             while next_gen.shape[0] < self.npop:
-                # Utiliza torunament selection para criar o mating pool
-                dad, mom = tournament_selection(pop, n_candidates)
                 # Faz o crossover utilizando SXB
                 if np.random.uniform(size=1) < pc:
+                    # Utiliza torunament selection para criar o mating pool
+                    dad, mom = selector.select(pop, n_candidates)
                     offspring1, offspring2 = sbx_crossover(dad, mom, self.bounds, eta)
                     # Acrescenta o indivíduo a próxima geração
                     next_gen = np.vstack((next_gen, np.array(offspring1), np.array(offspring2)))
